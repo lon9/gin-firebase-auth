@@ -43,17 +43,17 @@ func (fam *FirebaseAuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
 		token := strings.Replace(authHeader, "Bearer ", "", 1)
 		idToken, err := fam.cli.VerifyIDToken(context.Background(), token)
 		if err != nil {
-			if fam.unAuthorized == nil {
+			if fam.unAuthorized != nil {
+				fam.unAuthorized(c)
+			} else {
 				c.JSON(http.StatusUnauthorized, gin.H{
 					"status":  http.StatusUnauthorized,
 					"message": http.StatusText(http.StatusUnauthorized),
 				})
-			} else {
-				fam.unAuthorized(c)
 			}
 			return
 		}
-		c.Set(valName, *idToken)
+		c.Set(valName, idToken)
 		c.Next()
 	}
 }

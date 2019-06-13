@@ -21,6 +21,7 @@ func TestInit(t *testing.T) {
 
 	w := httptest.NewRecorder()
 	req, _ := http.NewRequest("GET", "/", nil)
+	req.Header.Add("Authorization", "Bearer example_token")
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusUnauthorized {
