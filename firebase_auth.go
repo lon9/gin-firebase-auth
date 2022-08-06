@@ -52,6 +52,7 @@ func (fam *FirebaseAuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
 				})
 			}
 			return
+			c.Abort()
 		}
 		c.Set(valName, idToken)
 		c.Next()
