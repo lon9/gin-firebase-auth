@@ -1,4 +1,4 @@
-module github.com/lon9/gin-firebase-auth
+module github.com/thaihuynhxyz/gin-firebase-auth
 
 go 1.19
 
