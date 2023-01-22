@@ -40,19 +40,24 @@ func New(credFileName string, unAuthorized func(c *gin.Context)) (*FirebaseAuthM
 func (fam *FirebaseAuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.Request.Header.Get("Authorization")
-		token := strings.Replace(authHeader, "Bearer ", "", 1)
+		_, token, found := strings.Cut(authHeader, " ")
+		if !found {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+				"status":  http.StatusForbidden,
+				"message": http.StatusText(http.StatusForbidden),
+			})
+			return
+		}
 		idToken, err := fam.cli.VerifyIDToken(context.Background(), token)
 		if err != nil {
 			if fam.unAuthorized != nil {
 				fam.unAuthorized(c)
 			} else {
-				c.JSON(http.StatusUnauthorized, gin.H{
+				c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 					"status":  http.StatusUnauthorized,
 					"message": http.StatusText(http.StatusUnauthorized),
 				})
 			}
-			return
-			c.Abort()
 		}
 		c.Set(valName, idToken)
 		c.Next()
