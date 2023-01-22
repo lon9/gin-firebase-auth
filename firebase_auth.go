@@ -46,6 +46,7 @@ func (fam *FirebaseAuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
 				"status":  http.StatusForbidden,
 				"message": http.StatusText(http.StatusForbidden),
 			})
+			return
 		}
 		idToken, err := fam.cli.VerifyIDToken(context.Background(), token)
 		if err != nil {
