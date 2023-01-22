@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/lon9/ginfirebaseauth"
+	ginfirebaseauth "github.com/lon9/gin-firebase-auth"
 )
 
 func main() {
