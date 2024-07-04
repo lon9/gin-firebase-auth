@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	r := gin.New()
+	r := gin.Default()
 	middleware, err := ginfirebaseauth.New("../credentials.json", nil)
 	if err != nil {
 		panic(err)
